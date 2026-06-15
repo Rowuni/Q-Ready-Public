@@ -1,0 +1,14 @@
+# test_openssl_critical.cnf — Test fixture for S4 scanner (critical severity)
+# Contains a configuration with SECLEVEL=0, which disables all security checks.
+# The scanner should produce exactly 1 finding of severity "critical".
+#
+# Usage:
+#   python scan.py --testset critical
+#
+# Expected findings:
+#   - OpenSSL-SECLEVEL-0  (CipherString @SECLEVEL=0)  → critical
+
+[system_default_sect]
+MinProtocol = TLSv1.3
+CipherString = DEFAULT@SECLEVEL=0
+Curves = P-256:P-384

@@ -1,0 +1,33 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    environment:
+      - DATABASE_URL=${DATABASE_URL:-sqlite:////data/qready.db}
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/ping')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+  frontend:
+    build:
+      context: ./frontend
+      target: builder # Targets the Node.js stage instead of Nginx
+    ports:
+      - "5173:5173" # Maps Vite's default port natively
+    volumes:
+      - ./frontend:/app # Syncs your local files to the container for hot reloading
+      - /app/node_modules # Prevents your local (host) node_modules from overwriting the container's
+    environment:
+      - API_TARGET=http://api:8000
+    command: npm run dev -- --host # Runs the Vite dev server exposed to the Docker network
+    depends_on:
+      api:
+        condition: service_healthy

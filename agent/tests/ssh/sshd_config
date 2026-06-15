@@ -1,0 +1,77 @@
+# This is the sshd server system-wide configuration file.
+# See the sshd_config(5) man page for more information.
+
+# -----------------------------------------------------------------------
+# Network
+# -----------------------------------------------------------------------
+Port 2222
+ListenAddress 0.0.0.0
+AddressFamily inet
+
+# -----------------------------------------------------------------------
+# Host keys
+# -----------------------------------------------------------------------
+HostKey C:/ProgramData/ssh/ssh_host_rsa_key
+HostKey C:/ProgramData/ssh/ssh_host_ed25519_key
+
+# -----------------------------------------------------------------------
+# Authentication
+# -----------------------------------------------------------------------
+LoginGraceTime 30
+PermitRootLogin no
+MaxAuthTries 3
+MaxSessions 5
+
+PubkeyAuthentication yes
+AuthorizedKeysFile .ssh/authorized_keys
+
+PasswordAuthentication no
+PermitEmptyPasswords no
+KbdInteractiveAuthentication no
+
+# -----------------------------------------------------------------------
+# Users
+# -----------------------------------------------------------------------
+AllowUsers alice bob deploy_bot
+DenyUsers guest
+
+# -----------------------------------------------------------------------
+# Cryptography  — intentionally includes weak algorithms to test the scanner
+# -----------------------------------------------------------------------
+HostKeyAlgorithms ssh-ed25519,ssh-rsa
+KexAlgorithms curve25519-sha256,diffie-hellman-group14-sha256,diffie-hellman-group1-sha1
+Ciphers aes256-ctr,aes192-ctr,3des-cbc
+MACs hmac-sha2-256,hmac-sha2-512,hmac-md5  # weak MAC added for inline-comment strip test
+
+# -----------------------------------------------------------------------
+# Features
+# -----------------------------------------------------------------------
+X11Forwarding no
+AllowTcpForwarding no
+PermitTunnel no
+PrintMotd yes
+Banner C:/ProgramData/ssh/banner.txt
+
+# -----------------------------------------------------------------------
+# Logging
+# -----------------------------------------------------------------------
+SyslogFacility LOCAL0
+LogLevel VERBOSE
+
+# -----------------------------------------------------------------------
+# SFTP subsystem
+# -----------------------------------------------------------------------
+Subsystem sftp sftp-server.exe
+
+# -----------------------------------------------------------------------
+# Match blocks
+# -----------------------------------------------------------------------
+Match User deploy_bot
+    ForceCommand internal-sftp
+    ChrootDirectory C:/deployments
+    AllowTcpForwarding no
+    X11Forwarding no
+
+Match Address 192.168.1.0/24
+    PasswordAuthentication yes
+    MaxAuthTries 5

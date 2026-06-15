@@ -1,0 +1,22 @@
+# test_openssl_aes128.cnf — Test fixture for SC4 MEDIUM range
+# CipherString explicitly enables AES-128 ciphers alongside AES-256.
+# AES-128 is quantum-vulnerable: Grover's algorithm reduces its effective
+# key length from 128 to 64 bits (SC1 = 20).
+#
+# Usage:
+#   python scan.py --testset aes128
+#
+# Expected findings after SC4:
+#   - AES-128  (CipherString includes AES128)
+#       SC1 = 20, SC2 = 0.8 (no expiry), SC3 = 0.7 (config)
+#       risk_score = (0.20×0.5 + 0.8×0.25 + 0.7×0.25) × 100 = 47.5 → MEDIUM
+#
+# Note: LOW severity (0 < score < 35) is mathematically impossible for
+# openssl.cnf findings because the fixed SC2+SC3 contribution (0.375 × 100
+# = 37.5) already exceeds the LOW threshold of 35, regardless of SC1.
+
+[system_default_sect]
+MinProtocol = TLSv1.2
+# No @SECLEVEL tag: SECLEVEL check skipped, AES-128 token detected below.
+CipherString = AES128-GCM-SHA256:AES128-SHA256:AES256-GCM-SHA384
+Curves = P-256:P-384:P-521

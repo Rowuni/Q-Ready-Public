@@ -1,0 +1,8 @@
+# Internal shared package — must be installed before this file
+# Local dev:  pip install -e ../shared
+# Docker:     installed from /shared/ in the Dockerfile (before this step)
+../shared
+
+cryptography==46.0.7
+paramiko==5.0.0
+wincertstore==0.2; sys_platform == "win32"

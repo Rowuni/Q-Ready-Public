@@ -1,0 +1,6 @@
+# Test fixture — sshd_config with weak crypto directives
+# Expected findings: 3 (diffie-hellman-group1-sha1 critical, 3des-cbc critical, hmac-sha1 high)
+Protocol 2
+KexAlgorithms diffie-hellman-group1-sha1,curve25519-sha256
+Ciphers 3des-cbc,aes256-gcm@openssh.com
+MACs hmac-sha1,hmac-sha2-256-etm@openssh.com

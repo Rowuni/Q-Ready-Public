@@ -1,0 +1,16 @@
+# test_openssl_medium.cnf — Test fixture for S4 scanner (medium severity)
+# Contains two medium-severity findings: a deprecated TLS 1.1 minimum protocol
+# and a 224-bit elliptic curve, both below the recommended security threshold
+# but not as severe as TLS 1.0 or SECLEVEL < 2.
+#
+# Usage:
+#   python scan.py --testset medium
+#
+# Expected findings:
+#   - TLS-TLSv1.1    (MinProtocol = TLSv1.1)            → medium
+#   - EC-secp224r1   (Curves includes secp224r1)         → medium
+
+[system_default_sect]
+MinProtocol = TLSv1.1
+CipherString = DEFAULT@SECLEVEL=2
+Curves = secp224r1:P-256:P-384

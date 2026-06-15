@@ -1,0 +1,35 @@
+# test_openssl_weak.cnf — Test fixture for the S4 scanner
+# This file intentionally contains weak configurations to validate
+# that scan_openssl_cnf() correctly detects each type of finding.
+#
+# Usage:
+#   Windows (PowerShell):
+#     $env:OPENSSL_CONF = "<absolute_path>\agent\tests\fixtures\test_openssl_weak.cnf" ; python scan.py
+#   Linux / macOS:
+#     OPENSSL_CONF=./agent/tests/fixtures/test_openssl_weak.cnf python scan.py
+#
+# Expected findings:
+#   - TLS-TLSv1.0        (MinProtocol = TLSv1 in system_default_sect)        → high
+#   - OpenSSL-SECLEVEL-1 (CipherString @SECLEVEL=1 in system_default_sect)   → high
+#   - EC-secp192r1       (Curves = secp192r1 in system_default_sect)         → high
+#   - OpenSSL-LegacyProvider (legacy provider enabled)                       → high
+
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = provider_sect
+
+[provider_sect]
+default = default_provider_sect
+legacy = legacy_provider_sect
+
+[default_provider_sect]
+activate = 1
+
+[legacy_provider_sect]
+activate = 1
+
+[system_default_sect]
+MinProtocol = TLSv1
+CipherString = DEFAULT@SECLEVEL=1
+Curves = secp192r1:P-256

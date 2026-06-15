@@ -1,0 +1,13 @@
+# Internal shared package — must be installed before this file
+# Local dev:  pip install -e ../shared
+# Docker:     installed from /shared/ in the Dockerfile (before this step)
+../shared
+
+fastapi==0.115.0
+uvicorn[standard]==0.30.6
+pydantic==2.9.2
+sqlalchemy==2.0.35
+alembic==1.13.3
+python-multipart==0.0.27
+cryptography==46.0.7
+paramiko==5.0.0

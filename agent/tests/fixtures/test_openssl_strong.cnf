@@ -1,0 +1,24 @@
+# test_openssl_strong.cnf — Test fixture for S4 scanner (secure configuration)
+# This file contains a correctly hardened OpenSSL configuration.
+# The scanner should produce zero findings against this file.
+#
+# Usage :
+#   python scan.py --testset strong
+#
+# Expected findings: none
+
+openssl_conf = openssl_init
+
+[openssl_init]
+providers = provider_sect
+
+[provider_sect]
+default = default_provider_sect
+
+[default_provider_sect]
+activate = 1
+
+[system_default_sect]
+MinProtocol = TLSv1.3
+CipherString = DEFAULT@SECLEVEL=2
+Curves = P-256:P-384:P-521

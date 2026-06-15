@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "qready-scoring"
+version = "1.0.0"
+requires-python = ">=3.12"
+description = "Shared post-quantum risk scoring engine for Q-Ready"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["qready_scoring*"]

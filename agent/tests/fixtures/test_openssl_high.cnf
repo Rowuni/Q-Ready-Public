@@ -1,0 +1,15 @@
+# test_openssl_high.cnf — Test fixture for S4 scanner (high severity)
+# Contains two distinct high-severity findings: a deprecated TLS version
+# and a weak SECLEVEL, without any critical or medium issues.
+#
+# Usage:
+#   python scan.py --testset high
+#
+# Expected findings:
+#   - TLS-TLSv1.0        (MinProtocol = TLSv1)          → high
+#   - OpenSSL-SECLEVEL-1 (CipherString @SECLEVEL=1)     → high
+
+[system_default_sect]
+MinProtocol = TLSv1
+CipherString = DEFAULT@SECLEVEL=1
+Curves = P-256:P-384
