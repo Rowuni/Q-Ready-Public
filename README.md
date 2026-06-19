@@ -1,6 +1,6 @@
 <div align="center">
 
-# Q-Ready
+# Q-Ready - Public Version
 
 **Post-Quantum Cryptography Migration Assistant**
 
